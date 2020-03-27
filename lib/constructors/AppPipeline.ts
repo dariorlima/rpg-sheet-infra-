@@ -4,7 +4,7 @@ import * as CodePipeline from '@aws-cdk/aws-codepipeline';
 import * as CodePipelineAction from '@aws-cdk/aws-codepipeline-actions'
 import * as CodeBuild from '@aws-cdk/aws-codebuild'
 
-export interface PipelineProps extends cdk.StackProps {
+export interface PipelineProps {
     github: {
         owner: string
         repository: string
@@ -68,9 +68,9 @@ export class AppPipeline extends cdk.Construct {
             actions: [
                 // AWS CodePipeline action to run CodeBuild project
                 new CodePipelineAction.CodeBuildAction({
-                    actionName: 'Website',
+                    actionName: 'BuildApp',
                     project: new CodeBuild.PipelineProject(this, 'BuildWebsite', {
-                        projectName: 'Website',
+                        projectName: 'RpgSheetApp',
                     }),
                     input: outputSources,
                     outputs: [outputWebsite],
@@ -87,7 +87,7 @@ export class AppPipeline extends cdk.Construct {
             actions: [
                 // AWS CodePipeline action to deploy CRA website to S3
                 new CodePipelineAction.S3DeployAction({
-                    actionName: 'Website',
+                    actionName: 'AppDeploy',
                     input: outputWebsite,
                     bucket,
                 }),
@@ -97,7 +97,7 @@ export class AppPipeline extends cdk.Construct {
         /**
          * Setting the output
          */
-        new cdk.CfnOutput(this, 'WebsiteURL', {
+        new cdk.CfnOutput(this, 'AppBucketUrl', {
             value: bucket.bucketWebsiteUrl,
             description: 'Website URL',
         });

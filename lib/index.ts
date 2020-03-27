@@ -12,8 +12,8 @@ export class RpgSheetStack extends cdk.Stack {
     new RpgSheetApiConstruct(this, 'RpgSheetApi', {
         artifactsBucket
     });
-    new RpgSheetAppConstruct(this, 'RpgSheetApp');
     
+    new RpgSheetAppConstruct(this, 'RpgSheetApp');
   
   }
 }
